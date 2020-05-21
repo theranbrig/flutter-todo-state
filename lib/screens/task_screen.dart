@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/components/task_list.dart';
 import 'package:todo_app/screens/add_task_screen.dart';
+import 'package:todo_app/components/task.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
+  @override
+  _TasksScreenState createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  List<Task> tasks = [Task(name: 'Buy Cheese')];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +39,7 @@ class TasksScreen extends StatelessWidget {
                       fontSize: 50,
                       fontWeight: FontWeight.bold),
                 ),
-                Text("12 Tasks",
+                Text("${tasks.length} Tasks",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -49,7 +57,7 @@ class TasksScreen extends StatelessWidget {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: TasksList()),
+                child: TasksList(tasks)),
           ),
         ],
       ),
@@ -64,7 +72,12 @@ class TasksScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskScreen(),
+                child: AddTaskScreen((newTaskTitle) {
+                  setState(() {
+                    tasks.add(Task(name: newTaskTitle));
+                    Navigator.pop(context);
+                  });
+                }),
               ),
             ),
           );
